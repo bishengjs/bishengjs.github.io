@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>BiSheng.js</title>
+  <meta name="keywords" content="双向数据绑定" />
+  <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style type="text/css">
+      body {
+        font: 14px/1.7 'helvetica neue', 'hiragino sans gb', stheiti,'wenquanyi micro hei',\5FAE\8F6F\96C5\9ED1,\5B8B\4F53, sans-serif;
+      }
+
+      img {
+        /*width: 100%;*/
+      }
+      
+      .container {
+        max-width: 1000px;
+      }
+      
+      pre {
+        padding: 0px;
+      }
+
+      .pre {
+          white-space: pre-wrap;
+          font-family: monospace, serif;
+          font-size: 1em;
+      }
+
+      .w250 {
+        width: 250px;
+      }
+
+      .gist .gist-file .gist-data .line-numbers {
+          line-height: 20px;
+      }
+      .gist .gist-file .gist-data .line-data {
+          line-height: 20px;
+      }
+
+      /* header */
+      h1, h2, h3 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+
+      h4, h5, h6 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+
+      blockquote p {
+        font-size: 14px;
+        line-height: 1.428571429;
+        font-weight: normal;
+      }
+
+      footer {
+        margin-bottom: 30px;
+      }
+
+  </style>
+
+  <!--  -->
+  <script src="../bower_components/jquery/jquery.js"></script>
+  <script src="../bower_components/handlebars/handlebars.js"></script>
+  <script src="../bower_components/mockjs/dist/mock.js"></script>
+  <script src="../dist/bisheng.js"></script>
+
+</head>
+<body>
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-10"><h1 id="bisheng-js">BiSheng.js</h1>
+<hr>
+<p><a href="http://travis-ci.org/thx/bisheng"><img src="https://api.travis-ci.org/thx/bisheng.png?branch=master" alt="Build Status"></a>
+<a href="https://github.com/thx/bisheng/"><img src="https://sourcegraph.com/api/repos/github.com/thx/bisheng/counters/views-24h.png" alt="Views in the last 24 hours"></a></p>
+<p>BI-Directional / Two-Way Data-Binding Library with JavaScript.</p>
+<!-- 双向数据绑定工具库。 -->
+
+<h2 id="downloads">Downloads</h2>
+<blockquote>
+<p>Right-click, and use &quot;Save As&quot;.</p>
+</blockquote>
+<p>
+    <a href="../dist/bisheng.js" class="btn btn-success w250">
+        Development Version (0.1.0)
+    </a> - 
+    <i><span id="uncompressed">?</span>kB, Full source, tons of comments</i>
+</p>
+<p>
+    <a href="../dist/bisheng-min.js" class="btn btn-primary w250">
+        Production Version (0.1.0)
+    </a> - 
+    <i><span id="minified">?</span>kB, Packed and gzipped (<a href="../dist/bisheng-min.map">Source Map</a>)</i>
+</p>
+<p>
+    <a href="https://raw2.github.com/thx/bisheng/master/dist/bisheng.js" class="btn btn-default w250">
+        Edge Version (master)
+    </a> - 
+    <i>Unreleased, use at your own risk</i>
+</p>
+
+<iframe src="http://ghbtns.com/github-btn.html?user=thx&repo=bisheng&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="131" height="30"></iframe>
+
+<iframe src="http://ghbtns.com/github-btn.html?user=thx&repo=bisheng&type=fork&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
+
+<script type="text/javascript">
+    function size(file, target) {
+        $.ajax({
+            type: 'head',
+            url: file
+        }).success(function(_, __, jqXHR) {
+            var size = jqXHR.getResponseHeader('Content-Length')
+            size = parseInt(size / 1024, 10)
+            $(target).html(size)
+        })
+    }
+    size('/dist/bisheng.js', '#uncompressed')
+    size('/dist/bisheng-min.js','#minified')
+</script>
+
+<h2 id="api">API</h2>
+<ul>
+<li><a href="./bisheng.html">BiSheng API</a><!-- <a href="./bisheng.html" type="button" class="btn btn-success">BiSheng</a> -->
+<!-- <a href="./loop.html" type="button" class="btn btn-default">Loop</a> -->
+
+</li>
+</ul>
+<h2 id="guides">Guides</h2>
+<ul>
+<li><a href="./what.html">What is BiSheng.js</a></li>
+<li><a href="./how.html">How BiSheng.js works</a></li>
+<li>Why BiSheng.js (TODO)<!-- * [Why BiSheng.js](./why.html) -->
+
+</li>
+</ul>
+<!-- 
+<a href="./what.html" type="button" class="btn btn-default">What is BiSheng.js</a>
+<a href="./how.html" type="button" class="btn btn-default">How BiSheng.js works</a>
+<a href="./why.html" type="button" class="btn btn-default">Why BiSheng.js</a>
+ -->
+
+<h2 id="browser-support">Browser Support</h2>
+<table>
+    <tr>
+        <td>
+            <img width="32" src="./image/Browsers_MIN/Png/IE.png">
+        </td>
+        <td>
+            <img width="32" src="./image/Browsers_MIN/Png/Chrome.png">
+            <img width="32" src="./image/Browsers_MIN/Png/Safari.png">
+            <img width="32" src="./image/Browsers_MIN/Png/Firefox.png">
+            <img width="32" src="./image/Browsers_MIN/Png/Opera.png">
+        </td>
+    </tr>
+    <tr>
+        <td>6+</td>
+        <td>(Current - 1) or Current</td>
+    </tr>
+</table>
+
+
+
+
+<!--
+* Internet Explorer：6+
+* Chrome, Safari, Firefox, Opera：前一个或当前版本
+-->
+<!-- IE：IE6 IE8 IE9 IE10 IE11 -->
+
+<h2 id="examples">Examples</h2>
+<p><div id="samples" class="row"></div></p>
+<script src="../bower_components/js-md5/js/md5.min.js"></script>
+<script src="./samples.js"></script>
+
+<h2 id="getting-started">Getting started</h2>
+<ol>
+<li><p>Install BiSheng.js</p>
+<pre><code> bower install bishengjs</code></pre>
+</li>
+<li><p>Reference BiSheng.js</p>
+<pre><code> &lt;script src=&quot;./bower_components/bishengjs/dist/bisheng.js&quot;&gt;&lt;/script&gt;</code></pre>
+</li>
+<li><p>Use <code>BiSheng.bind()</code></p>
+<pre><code> // HTML 模板
+ var tpl = &#39;{{title}}&#39;
+ // 数据对象
+ var data = {
+   title: &#39;foo&#39;
+ }
+ // 执行双向绑定
+ BiSheng.bind(data, tpl, function(content){
+   // 然后在回调函数中将绑定后的 DOM 元素插入文档中
+   $(&#39;div.container&#39;).append(content)
+ });
+ // 改变数据 data.title，对应的文档区域会更新
+ data.title = &#39;bar&#39;</code></pre>
+</li>
+</ol>
+<h2 id="more-examples">More Examples</h2>
+<ul>
+<li><a href="../demo/todo/index.html">TodoMVC</a></li>
+<li><a href="../demo/loop.html">Watch Properties of Data Object</a></li>
+<li><a href="../demo/expression.html">Watch Expressions <code>{{}}</code></a></li>
+<li><a href="../demo/attribute.html">Watch Attributes of DOM</a></li>
+<li><a href="../demo/block.html">Watch Block</a></li>
+<li><a href="../demo/form.html">Wach Form Elements</a></li>
+</ul>
+<!-- 监听数据对象的属性 -->
+<!-- 监听表达式 -->
+<!-- 监听 DOM 节点的属性 -->
+<!-- 监听逻辑块 -->
+<!-- 监听表单元素 -->
+
+<h2 id="unit-testing">Unit Testing</h2>
+<ul>
+<li><a href="../test/bisheng.html?noglobals=true&amp;notrycatch=true">QUnit</a></li>
+</ul>
+<!-- 
+## Thanks
+
+Thanks to the following articles and frameworks for giving BiSheng.js this inspiration:
+
+感谢以下框架和文章给 BiSheng.js 的启发：
+
+1. [AngularJS — Superheroic JavaScript MVW Framework](http://angularjs.org/)
+2. [Rivets.js — Lightweight and powerful data binding + templating solution for building modern web applications](https://github.com/mikeric/rivets)
+3. [nytimes/backbone.stickit](https://github.com/nytimes/backbone.stickit)
+4. [Epoxy.js — Elegant Data Binding for Backbone](https://github.com/gmac/backbone.epoxy)
+5. [Ember.js — A framework for creating ambitious web applications](http://emberjs.com/)
+6. [Knockout — Simplify dynamic JavaScript UIs with the Model-View-View Model (MVVM) pattern](http://knockoutjs.com/)
+7. [backbone.modelbinding — Awesome model binding for Backbone.js](https://github.com/derickbailey/backbone.modelbinding/)
+8. [RubyLouvre/avalon — 迷你简单易用的MVVM框架](https://github.com/RubyLouvre/avalon)
+9. [shepherdwind/bidi - MVVM for KISSY](https://github.com/shepherdwind/bidi)
+10. [$watch How the $apply Runs a $digest](http://angular-tips.com/blog/2013/08/watch-how-the-apply-runs-a-digest/)，[翻译](http://blog.csdn.net/leekangtaqi/article/details/10376363)
+ --></div>
+      <div class="col-md-2">
+        <div class="panel panel-default" style="position: fixed; margin-top: 75px;">
+          <div class="panel-heading">Contents</div>
+          <div class="panel-body catalog"></div>
+        </div>
+      </div>
+    </div><!-- /row-->
+
+  </div>
+
+  <footer class="container">
+    <hr>
+    <p class="pull-left">
+      <a href="https://github.com/thx/bisheng">GitHub</a>
+    </p>
+    <p class="pull-right">
+      <a href="http://nuysoft.com/about.html">nuysoft</a>
+    </p>
+  </footer>
+  
+  <!-- Table -->
+  <script type="text/javascript">
+    $(function(){
+        $('table').addClass('table')
+    })
+  </script>
+
+  <!-- Catalog -->
+  <script type="text/javascript">
+    var ul = $('<ul>').addClass('list-unstyled')
+    $('h2').each(function(index, item){
+      var name = $(item).html()
+      $(item).before('<a name="' + name + '"></a>')
+      ul.append(
+        $('<li>').append(
+          $('<a>').attr('href', '#'+ name)
+            .html(name)
+        )
+      )
+    })
+    $('div.catalog').append(ul)
+  </script>
+
+  <link rel="stylesheet" href="../bower_components/highlightjs/styles/rainbow.css">
+  <script src="../bower_components/highlightjs/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
