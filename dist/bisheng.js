@@ -1,4 +1,4 @@
-/*! BiSheng.js 2014-01-14 11:10:44 PM CST */
+/*! BiSheng.js 2014-01-14 11:44:58 PM CST */
 /*! src/fix/prefix-1.js */
 (function(factory) {
     /*! src/expose.js */
@@ -834,7 +834,7 @@
             }(), function(index, attributeNode) {
                 var nodeName = attributeNode.nodeName, nodeValue = attributeNode.nodeValue, ma, stylema;
                 nodeName = nodeName.toLowerCase();
-                nodeName = nodeName === "bs-style" && "style" || nodeName === "bs-checked" && "checked" || nodeName === "bs-src" && "src" || nodeName;
+                nodeName = nodeName === "bs-style" && "style" || nodeName === "bs-src" && "src" || nodeName === "bs-checked" && "checked" || nodeName;
                 if (nodeName === "style") {
                     restyle.exec("");
                     while (stylema = restyle.exec(nodeValue)) {
@@ -870,8 +870,8 @@
                     });
                 }
                 if (nodeName === "style") $(node).attr("style", nodeValue);
-                if (nodeName === "checked" && nodeValue === "true") $(node).attr("checked", "checked");
                 if (nodeName === "src") $(node).attr("src", nodeValue);
+                if (nodeName === "checked" && nodeValue === "true") $(node).attr("checked", "checked");
             });
         }
         // 扫描子节点
