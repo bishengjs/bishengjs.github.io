@@ -69,6 +69,7 @@ test('BiSheng.watch(data, property, fn(change)), nested', function() {
     }
     doBiShengWatch(data, 'foo', task, expected)
 })
+
 /*
 var data = {}
 BiSheng.watch(data, ['a', 'b', 'c'], function(change) {
@@ -89,7 +90,7 @@ function doBiShengUnwatch(expected) {
     BiSheng.watch(data, ['foo'], noop) // 2
     BiSheng.watch(data, ['foo', 'bar'], noop) // 3
     BiSheng.watch(data, noop) // 4
-    equal(BiSheng.Loop.tasks.length, 4)
+    equal(BiSheng.Loop.tasks.length, 4, '共计 4 个监听函数')
 
     expected(data, noop)
 }
@@ -98,43 +99,43 @@ function doBiShengUnwatch(expected) {
 test('BiSheng.unwatch(data, properties, fn)', function() {
     doBiShengUnwatch(function(data, fn) {
         BiSheng.unwatch(data, 'foo', fn) // 移除第 1、2 个监听函数
-        equal(BiSheng.Loop.tasks.length, 2)
+        equal(BiSheng.Loop.tasks.length, 2, '移除第 1、2 个监听函数')
 
         BiSheng.unwatch(data, 'bar', fn) // 移除第 3 个监听函数
-        equal(BiSheng.Loop.tasks.length, 1)
+        equal(BiSheng.Loop.tasks.length, 1, '移除第 3 个监听函数')
 
         BiSheng.unwatch(data, fn) // 移除第 4 个监听函数
-        equal(BiSheng.Loop.tasks.length, 0)
+        equal(BiSheng.Loop.tasks.length, 0, '移除第 4 个监听函数')
     })
 })
 test('BiSheng.unwatch(data, properties)', function() {
     doBiShengUnwatch(function(data, fn) {
         BiSheng.unwatch(data, 'bar') // 3
-        equal(BiSheng.Loop.tasks.length, 4)
+        equal(BiSheng.Loop.tasks.length, 4, '移除第 3 个监听函数')
 
         BiSheng.unwatch(data, 'foo') // 1, 2, 3
-        equal(BiSheng.Loop.tasks.length, 1)
+        equal(BiSheng.Loop.tasks.length, 1, '移除第 1、2、3 个监听函数')
 
         BiSheng.unwatch(data, fn) // 4
-        equal(BiSheng.Loop.tasks.length, 0)
+        equal(BiSheng.Loop.tasks.length, 0, '移除第 4 个监听函数')
 
     })
 })
 test('BiSheng.unwatch(data, fn)', function() {
     doBiShengUnwatch(function(data, fn) {
         BiSheng.unwatch(data, fn)
-        equal(BiSheng.Loop.tasks.length, 0)
+        equal(BiSheng.Loop.tasks.length, 0, '移除所有监听函数')
     })
 })
 test('BiSheng.unwatch(data)', function() {
     doBiShengUnwatch(function(data, fn) {
         BiSheng.unwatch(data)
-        equal(BiSheng.Loop.tasks.length, 0)
+        equal(BiSheng.Loop.tasks.length, 0, '移除所有监听函数')
     })
 })
 test('BiSheng.unwatch(fn)', function() {
     doBiShengUnwatch(function(data, fn) {
         BiSheng.unwatch(fn)
-        equal(BiSheng.Loop.tasks.length, 0)
+        equal(BiSheng.Loop.tasks.length, 0, '移除所有监听函数')
     })
 })

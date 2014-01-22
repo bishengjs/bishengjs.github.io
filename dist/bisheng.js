@@ -1,4 +1,4 @@
-/*! BiSheng.js 2014-01-15 03:46:19 PM CST */
+/*! BiSheng.js 2014-01-21 11:15:43 PM CST */
 /*! src/fix/prefix-1.js */
 (function(factory) {
     /*! src/expose.js */
@@ -33,6 +33,26 @@
     });
 })(function() {
     /*! src/loop.js */
+    // 运行模式
+    var AUTO = false;
+    function auto(bool) {
+        if (bool === undefined) return AUTO;
+        AUTO = !!bool;
+        if (AUTO) timerId = setTimeout(letMeSee, 50); else clearTimeout(timerId);
+    }
+    // 执行任务
+    var tasks = [];
+    var timerId;
+    tasks.__index = 0;
+    // TODO 记录双向绑定任务的插入位置
+    function letMeSee() {
+        clearTimeout(timerId);
+        for (var i = 0; i < tasks.length; i++) {
+            tasks[i] && tasks[i]();
+        }
+        if (AUTO) timerId = setTimeout(letMeSee, 50);
+    }
+    if (AUTO) timerId = setTimeout(letMeSee, 50);
     /*
         # Loop
 
@@ -55,17 +75,6 @@
             DELETE: "delete",
             UPDATE: "update"
         };
-        var tasks = [];
-        tasks.__index = 0;
-        var timerId;
-        function letMeSee() {
-            clearTimeout(timerId);
-            for (var i = 0; i < tasks.length; i++) {
-                tasks[i] && tasks[i]();
-            }
-            timerId = setTimeout(letMeSee, 50);
-        }
-        timerId = setTimeout(letMeSee, 50);
         /*
             ## Loop.watch(data, fn(changes))
 
@@ -465,6 +474,7 @@
         }
         // expose
         return {
+            auto: auto,
             tasks: tasks,
             TYPES: TYPES,
             watch: watch,
@@ -899,6 +909,7 @@
                 // TODO 为什么不触发 change 事件？
                 $(target).on("change.bisheng keyup.bisheng", function(event) {
                     updateValue(data, path, event.target);
+                    if (!Loop.auto()) Loop.letMeSee();
                 });
             });
             Locator.find({
@@ -921,9 +932,10 @@
                 $(target).on("change.bisheng", function(event, firing) {
                     // radio：点击其中一个后，需要同步更新同名的其他 radio
                     if (!firing && event.target.type === "radio") {
-                        $('input:radio[name="' + event.target.name + '"]').not(event.target).trigger("change", firing = true);
+                        $('input:radio[name="' + event.target.name + '"]').not(event.target).trigger("change.bisheng", firing = true);
                     }
                     updateChecked(data, path, event.target);
+                    if (!Loop.auto()) Loop.letMeSee();
                 });
             });
         }
@@ -1050,8 +1062,6 @@
 
         */
         function handle(event, change, defined, context) {
-            // var selector = 'script[slot="start"][path="' + change.path.join('.') + '"]'
-            // var paths = $(selector)
             var paths = Locator.find({
                 slot: "start",
                 path: change.path.join(".")
@@ -1240,7 +1250,6 @@
                     */
                     case 3:
                     $(item).wrap("<span>").parent().addClass("transition highlight");
-                    // $(item.parentNode).addClass('transition highlight')
                     setTimeout(function() {
                         $(item).unwrap("<span>").removeClass("transition highlight");
                     }, 500);
@@ -1310,6 +1319,21 @@
         var guid = 1;
         return {
             version: "0.1.0",
+            /*
+                ## BiSheng.auto(bool)
+
+                设置运行模式为自动检测（true）或手动触发检测（false）。
+
+                BiSheng.js 初始化时，会默认执行 BiSheng.auto(false)，即默认设置为手动触发检测，此时，在更新数据时，需要手动调用 BiSheng.apply(fn)。
+                如果希望自动检测，则执行 执行 BiSheng.auto(true)。
+            */
+            auto: function(bool) {
+                if (arguments.length) {
+                    Loop.auto(bool);
+                    return this;
+                }
+                return Loop.auto();
+            },
             /*
                 ## BiSheng.bind(data, tpl, callback(content))
 
@@ -1646,9 +1670,21 @@
                     if (found) Loop.tasks.splice(i--, 1);
                 }
                 return this;
+            },
+            /*
+                ## BiSheng.apply(fn)
+                
+                更新数据，然后检查数据的变化，并自动视图。
+
+            */
+            apply: function(fn) {
+                fn();
+                BiSheng.Loop.letMeSee();
+                return this;
             }
         };
     }();
+    // BiSheng.auto(false)
     /*! src/fix/suffix.js */
     BiSheng.Loop = Loop;
     BiSheng.Locators = Locators;
