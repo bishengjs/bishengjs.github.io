@@ -3,10 +3,10 @@
 
 <div class='gallery' id='chart'></div>
 
-<script type="text/javascript" src="http://strongriley.github.io/d3/d3.js?2.2.0"></script>
-<script type="text/javascript" src="http://strongriley.github.io/d3/d3.layout.js?2.2.0"></script>
+<script src="http://strongriley.github.io/d3/d3.js?2.2.0"></script>
+<script src="http://strongriley.github.io/d3/d3.layout.js?2.2.0"></script>
 <link href='why-banner.css' rel='stylesheet' type='text/css' />
-<script type="text/javascript" src="why-banner.js"></script>
+<script src="why-banner.js"></script>
 
 ## 文前
 
