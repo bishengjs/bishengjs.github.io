@@ -1,4 +1,4 @@
-<h1>选择毕昇 <small>Why BiSheng.js</smaLL></h1>
+<h1>为什么选择毕昇 <small>Why BiSheng.js</smaLL></h1>
 <hr>
 
 <div class='gallery' id='chart'></div>
@@ -15,7 +15,6 @@
 ## 可以用 140 个字概述这篇文章吗？
 
 如果你时间不够，下面是这篇文章的摘要，只有一条 tweet 的长度：
-
 
 ## 同类作品
 

@@ -138,15 +138,15 @@ BI-Directional / Two-Way Data-Binding Library with JavaScript.
 
 <!-- Use Module Loader  -->
 
-* **AMD ( RequireJS )** 
+* **AMD ( RequireJS )** [Specifications](https://github.com/amdjs/amdjs-api/wiki/AMD)
 
     <iframe width="100%" height="370" src="http://jsfiddle.net/HbhJ3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-* **CMD ( SeaJS )**
+* **CMD ( SeaJS )** [Specifications](https://github.com/seajs/seajs/issues/242)
 
     <iframe width="100%" height="430" src="http://jsfiddle.net/ekfY8/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-* **KMD ( KISSY )** 
+* **KMD ( KISSY )** [Specifications](http://docs.kissyui.com/1.4/docs/html/guideline/kmd.html)
 
     <iframe width="100%" height="430" src="http://jsfiddle.net/4eAF9/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
@@ -168,9 +168,9 @@ BI-Directional / Two-Way Data-Binding Library with JavaScript.
 ## Unit Testing
 
 * [QUnit](../test/bisheng.html?noglobals=true&notrycatch=true)
-* [AMD ( RequireJS )](../test/expose_amd.html)
-* [CMD ( SeaJS )](../test/expose_cmd.html)
-* [KMD ( KISSY )](../test/expose_kmd.html)
+* [AMD ( RequireJS )](../test/expose_amd.html?noglobals=true&notrycatch=true)
+* [CMD ( SeaJS )](../test/expose_cmd.html?noglobals=true&notrycatch=true)
+* [KMD ( KISSY )](../test/expose_kmd.html?noglobals=true&notrycatch=true)
 
 <!-- 
 ## Thanks
