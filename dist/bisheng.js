@@ -1,4 +1,4 @@
-/*! BiSheng.js 2014-01-24 10:48:46 AM CST */
+/*! BiSheng.js 2014-02-15 09:55:32 PM CST */
 /*! src/fix/prefix-1.js */
 (function(factory) {
     /*! src/expose.js */
@@ -67,17 +67,32 @@
         } else if (typeof KISSY != "undefined") {
             // For KISSY 1.4
             // http://docs.kissyui.com/1.4/docs/html/guideline/kmd.html
-            window.define = function define(id, dependencies, factory) {
-                // KISSY.add(name?, factory?, deps)
-                KISSY.add(id, function() {
-                    var slice = [].slice;
-                    var args = slice.call(arguments, 1, arguments.length - 1);
-                    return factory.apply(window, args);
-                }, {
-                    requires: dependencies
-                });
-            };
-            window.define.kmd = {};
+            if (!window.define) {
+                window.define = function define(id, dependencies, factory) {
+                    // KISSY.add(name?, factory?, deps)
+                    function proxy() {
+                        var slice = [].slice;
+                        var args = slice.call(arguments, 1, arguments.length);
+                        return factory.apply(window, args);
+                    }
+                    switch (arguments.length) {
+                      case 2:
+                        factory = dependencies;
+                        dependencies = id;
+                        KISSY.add(proxy, {
+                            requires: dependencies
+                        });
+                        break;
+
+                      case 3:
+                        KISSY.add(id, proxy, {
+                            requires: dependencies
+                        });
+                        break;
+                    }
+                };
+                window.define.kmd = {};
+            }
             define(id, dependencies, factory);
         } else {
             // Browser globals
@@ -1420,6 +1435,8 @@
                 在模板和数据之间执行双向绑定。
 
                 * BiSheng.bind(data, tpl, callback(content))
+                * BiSheng.bind(data, tpl, context)
+                * BiSheng.bind(data, tpl)
 
                 **参数的含义和默认值**如下所示：
 
@@ -1446,6 +1463,13 @@
 
             */
             bind: function bind(data, tpl, callback, context) {
+                // BiSheng.bind(data, tpl, context)
+                if (arguments.length === 3 && typeof callback !== "function") {
+                    context = callback;
+                    callback = function(content) {
+                        jQuery(context).append(content);
+                    };
+                }
                 // 属性监听函数
                 function task(changes) {
                     jQuery.each(changes, function(_, change) {
@@ -1765,7 +1789,7 @@
                     })
             */
             apply: function(fn) {
-                fn();
+                if (fn) fn();
                 BiSheng.Loop.letMeSee();
                 return this;
             }
