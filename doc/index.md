@@ -76,8 +76,7 @@ BI-Directional / Two-Way Data-Binding Library with JavaScript.
 
 * [What is BiSheng.js](./what.html)
 * [How BiSheng.js works](./how.html)
-* Why BiSheng.js (TODO)
-<!-- * [Why BiSheng.js](./why.html) -->
+* [Why BiSheng.js](./why.html)
 
 <!-- 
 <a href="./what.html" type="button" class="btn btn-default">What is BiSheng.js</a>
@@ -168,6 +167,7 @@ BI-Directional / Two-Way Data-Binding Library with JavaScript.
 ## Unit Testing
 
 * [QUnit](../test/bisheng.html?noglobals=true&notrycatch=true)
+* [QUnit for KISSY](../test/bisheng_kissy.html?noglobals=true&notrycatch=true)
 * [AMD ( RequireJS )](../test/expose_amd.html?noglobals=true&notrycatch=true)
 * [CMD ( SeaJS )](../test/expose_cmd.html?noglobals=true&notrycatch=true)
 * [KMD ( KISSY )](../test/expose_kmd.html?noglobals=true&notrycatch=true)
