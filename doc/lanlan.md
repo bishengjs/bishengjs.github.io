@@ -1,7 +1,8 @@
 title: BiSheng.js
 author:
-  name: 墨智
+  name: 墨智 / 高云
   email: mozhi.gyy@alibaba-inc.com
+  url: http://nuysoft.com
 output: lanlan.html
 controls: true
 
@@ -18,6 +19,22 @@ controls: true
     * 问答
     * 一点私货
 -->
+
+<!-- 
+    随堂问题：
+
+    我在分享的过程中会做一些提问和调查，需要各位的配合，我会根据你们的回答调整分享的内容。
+
+    * 知道 AngularJS、Ember.js 的请举一下手
+    * 读过 Backbone.js 源码的有多少呢
+    * 在项目中应用过双向绑定的有多少呢，包括公司的业务和业余项目
+    * 了解 AngularJS、Ember.js 实现原理的有多少呢
+    * 使用过程中的感受如何
+    * 了解过 Handlebars.js 或 KISSY XTemplate 语法树的有多少呢
+
+    * 读过 jQuery 源码的请配合举一下手
+    * 看过哪些模块呢，看的较多的有些模块呢，有什么样的启发
+ -->
 
 <style type="text/css">
     @font-face {
@@ -320,259 +337,115 @@ controls: true
 --
 
 ### 应用场景和示例
---
 
+以表单元素 `<input value="{{first}}">` 为例。
+
+<iframe width="100%" height="160" src="http://jsfiddle.net/MjV6S/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+--
 ### 实现细节
 
---
-
-### 未来规划
-
---
-
-### 问答
-
---
-
-
-
-
-
-
-
---
-
-### 应用场景
-
-* 表达式 <br> `{{foo}}`
-* 逻辑块 <br> `{{#with story}}{{{intro}}}{{/with}}`
-* 属性 <br> `<span title="{{title}}">{{title}}</span>`
-* 表单 <br> `<input class="form-control" value="{{first}}">`
-
---
-
-### 应用场景
-
-现在只支持 [Handlebars.js]。
-
-下一步支持 [CROX](http://gitlab.alibaba-inc.com/thx/crox)、[KISSY XTemplate](http://docs.kissyui.com/1.4/docs/html/api/xtemplate/index.html)。
-
-[Handlebars.js]: http://handlebarsjs.com/
-
---
-
-### 浏览器支持
-
-* Internet Explorer
-    
-    6+
-
-* Chrome, Safari, Firefox, Opera
-    
-    前一个和当前版本（TODO）
-
---
-
-### API
+BiSheng.js 的 API 非常简洁和符合直觉，总共只有 5 个公开方法：
 
 * BiSheng.bind(data, tpl, callback)
-
-    在模板和数据之间执行双向绑定。
-
 * BiSheng.unbind(data, tpl)
-
-    解除数据和模板之间的双向绑定。
-
-详细说明：[HTML](bisheng.html)，[Markdown](bisheng.md)。
-
---
-
-### 示例
-
-    // HTML 模板
-    var tpl = '{{title}}'
-    // 数据对象
-    var data = {
-      title: 'foo'
-    }
-    // 执行双向绑定
-    BiSheng.bind(data, tpl, function(content){
-      // 然后在回调函数中将绑定后的 DOM 元素插入文档中
-      $('div.container').append(content)
-    });
-
-    // 改变数据 data.title，对应的文档区域会更新
-    data.title = 'bar'
-
-    // 解除双向绑定
-    BiSheng.unbind(data, tpl);
-
-    // 改变数据 data.title，对应的文档区域不会更新
-    data.title = 'foo'
-
---
-
-### API
-
-* BiSheng.watch(data, fn(changes))
-
-    为所有属性添加监听函数。
-
+* BiSheng.watch(data, properties, fn(change))
 * BiSheng.unwatch(data, fn)
-    
-    移除监听函数。
+* BiSheng.apply(fn)
 
-详细说明：[HTML](bisheng.html)，[Markdown](bisheng.md)。
-
---
-
-### 示例
-
-    var data = { foo: 'foo' }
-    BiSheng.watch(data, function(changes){
-        console.log(JSON.stringify(changes, null, 4))
-    })
-
-    data.foo = 'bar'
-    // => 见下一页
-    
-    setTimeout(function(){
-        BiSheng.unwatch(data)
-        data.foo = 'foo'
-        // => 
-    }, 1000)
+`BiSheng` 是唯一的入口对象。
 
 --
+### 实现细节
 
-### 示例
+详细的 API 文档，请访问 [HTML](/doc/bisheng.html) 或 [Markdown](/doc/bisheng.md)。
 
-    // =>
-    [
-        {
-            "type": "update",
-            "path": [
-                3,
-                "foo"
-            ],
-            "value": "bar",
-            "oldValue": "foo",
-            "root": {
-                "foo": "bar"
-            },
-            "context": {
-                "foo": "bar"
-            }
-        }
-    ]
+![](image/bishengjs_api.png)
 
 --
-### 开发方式
+### 实现细节
 
-* 事件驱动编程 & 运行
-* 数据驱动编程 & 运行
+BiSheng.js 会修改模板语法树，插入定位符，通过定位符来建立数据和 DOM 元素之间的连接。
 
-数据要比事件更容易驾驭。
-
-<!-- 所以接下来，如果要在复杂数据和复杂代码中选择一个，宁愿选择前者。更进一步：在设计中，你应该主动将代码的复杂度转移到数据之中去。 -->
-
-<http://localhost:5000/test/bisheng.html?noglobals=true&notrycatch=true&testNumber=66>
-
---
-### 工作原理
-
-1. 修改语法树，插入定位符。
+1. 修改模板语法树，插入定位符。
 2. 渲染模板和定位符。
 3. 解析定位符。
 4. 建立数据到 DOM 元素的连接。
 5. 建立 DOM 元素到数据的连接。
 
-详细说明：[HTML](how.html)，[Markdown](how.md)。
+--
+### 实现细节
+
+关于 BiSheng.js 的实现原理，您可以在 [How BiSheng.js works](http://bishengjs.com/doc/how.html) 看到详细的设计过程和原理分析。
 
 --
+### 未来规划
 
-#### 以模板 `{{title}}` 为例
-
-    // HTML 模板
-    var tpl = '{{title}}'
-    // 数据对象
-    var data = {
-      title: '注意，title 的值在这里'
-    }
-    // 执行双向绑定
-    BiSheng.bind(data, tpl, function(content){
-      // 然后在回调函数中将绑定后的 DOM 元素插入文档中
-      $('div.container').append(content)
-    });
-    // 改变数据 data.title，对应的文档区域会更新
-    data.title = 'bar'
+支持 [CROX](http://gitlab.alibaba-inc.com/thx/crox)、[KISSY XTemplate](http://docs.kissyui.com/1.4/docs/html/api/xtemplate/index.html)。
 
 --
-
-#### 1. 修改语法树，插入定位符
-
-    <script guid="1" slot="start" type="" path="{{$lastest title}}" isHelper="false"></script>
-    <script guid="1" slot="end"></script>
-
-<p></p>
-
-    Handlebars.registerHelper('$lastest', function(items, options) {
-        return items && items.$path || this && this.$path
-    })
-
---
-
-#### 2. 渲染模板和定位符
-
-    Handlebars.compile(ast)(data)
-
-<p></p>
-    
-    &lt;script guid="1" slot="start" type="" path="1.title" isHelper="false"&gt;&lt;/script&gt;
-    注意，title 的值在这里
-    &lt;script guid="1" slot="end"&gt;&lt;/script&gt;
-
---
-
-#### 3. 扫描 DOM 元素，解析定位符
-
-    <script guid="1" slot="start" type="" path="1.title" isHelper="false"></script>
-    注意，title 的值在这里
-    <script guid="1" slot="end"></script>
-
---
-
-#### 4. 建立数据到 DOM 元素的连接
-
-    script[slot="start"][path="1.title"]
-
---
-
-#### 5. 建立 DOM 元素到数据的连接
-
-    $(target).on('change.bisheng keyup.bisheng', function(event) {
-        updateValue(data, path, event.target)
-    })
-
---
-
-### 回顾一下
-
-* 应用场景
-* 浏览器支持
-* API
-* 示例
-* 开发方式
-* 工作原理
-
-> 只做一件事，并做好。——《Unix 编程艺术》
-
---
-
 ### 写作工具
 
 * <https://github.com/jdan/cleaver/>
 * <https://github.com/Bartvds/grunt-cleaver>
 
+--
+### 回顾一下
+
+* BiSheng.js 是什么
+* 应用场景和示例
+* 实现细节
+
+> 只做一件事，并做好。——《Unix 编程艺术》
+
+--
+### 问答
+
+1. 已经有了 AngularJS、Ember.js 等等优秀的双向绑定框架，为什么开发 BiSheng.js 呢？
+
+    兴趣 & 学习 & KPI。
+
+2. 已经有了 AngularJS、Ember.js 等等优秀的双向绑定框架，为什么选择 BiSheng.js 呢？
+
+    * 太多的概念和编码约定
+    * 对既有架构的冲击大
+    * DOM 模板天生不支持 IE6、IE7
+
+--
+### 问答
+
+<p style="text-align: center; font-size: 128px; ">？</p>
+
+--
+### 一点私货
+
+<p style="text-align: center;">
+    <img src="http://nuysoft.com/assets/jquery_internals/shupi.jpg" width="256">
+</p>
+
+--
+### 《jQuery 技术内幕》
+
+* 采用由浅入深的方式，先概述功能、用法、结构和实现原理，然后介绍关键步骤和和分析源码实现。
+* 每个模块辅以大量插图，总结了公开方法和底层方法的调用关系、执行过程。
+
+--
+### 《jQuery 技术内幕》
+
+* 前端工程师通过阅读本书可以巩固基础知识、洞悉 jQuery 背后的实现原理、学习进行源码分析的方法和技巧，从而快速成长。
+* 资深前端通过阅读本书可以借鉴和印证 jQuery 的架构设计和实现方式。
+
+--
+### 没有了
+
+<p style="text-align: center; font-size: 64px;">谢谢各位的聆听</p>
+
+无论您对双向绑定有什么见解，或者对 BiSheng.js 有什么建议，或者遇到什么不爽的地方，欢迎来 [砸砖](https://github.com/thx/bisheng/issues/) 和 [交流](mailto:nuysoft@gmail.com)。
+
+<!-- 
+    BiSheng.js 才刚刚起步，尚不完善。
+    如果从我今天的分享中学到了东西或有所启发，请打赏一个赞。
+ -->
 
 <style type="text/css">
     pre {

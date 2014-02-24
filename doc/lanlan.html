@@ -406,6 +406,22 @@ pre .chunk {
     * 一点私货
 -->
 
+<!-- 
+    随堂问题：
+
+    我在分享的过程中会做一些提问和调查，需要各位的配合，我会根据你们的回答调整分享的内容。
+
+    * 知道 AngularJS、Ember.js 的请举一下手
+    * 读过 Backbone.js 源码的有多少呢
+    * 在项目中应用过双向绑定的有多少呢，包括公司的业务和业余项目
+    * 了解 AngularJS、Ember.js 实现原理的有多少呢
+    * 使用过程中的感受如何
+    * 了解过 Handlebars.js 或 KISSY XTemplate 语法树的有多少呢
+
+    * 读过 jQuery 源码的请配合举一下手
+    * 看过哪些模块呢，看的较多的有些模块呢，有什么样的启发
+ -->
+
 <style type="text/css">
     @font-face {
         font-family: 'logo';
@@ -644,198 +660,96 @@ var data = {
 <p>以 HTML 属性 <code>&lt;span title=&quot;{{title}}&quot;&gt;{{title}}&lt;/span&gt;</code> 为例。</p>
 <iframe width="100%" height="250" src="http://jsfiddle.net/nv7er/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe></section>
     <section class="slide"><h3 id="-">应用场景和示例</h3>
+<p>以表单元素 <code>&lt;input value=&quot;{{first}}&quot;&gt;</code> 为例。</p>
+<iframe width="100%" height="160" src="http://jsfiddle.net/MjV6S/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe></section>
+    <section class="slide"><h3 id="-">实现细节</h3>
+<p>BiSheng.js 的 API 非常简洁和符合直觉，总共只有 5 个公开方法：</p>
+<ul>
+<li>BiSheng.bind(data, tpl, callback)</li>
+<li>BiSheng.unbind(data, tpl)</li>
+<li>BiSheng.watch(data, properties, fn(change))</li>
+<li>BiSheng.unwatch(data, fn)</li>
+<li>BiSheng.apply(fn)</li>
+</ul>
+<p><code>BiSheng</code> 是唯一的入口对象。</p>
 </section>
     <section class="slide"><h3 id="-">实现细节</h3>
+<p>详细的 API 文档，请访问 <a href="/doc/bisheng.html">HTML</a> 或 <a href="/doc/bisheng.md">Markdown</a>。</p>
+<p><img src="image/bishengjs_api.png" alt=""></p>
 </section>
-    <section class="slide"><h3 id="-">未来规划</h3>
-</section>
-    <section class="slide"><h3 id="-">问答</h3>
-</section>
-    <section class="slide"></section>
-    <section class="slide"><h3 id="-">应用场景</h3>
-<ul>
-<li>表达式 <br> <code>{{foo}}</code></li>
-<li>逻辑块 <br> <code>{{#with story}}{{{intro}}}{{/with}}</code></li>
-<li>属性 <br> <code>&lt;span title=&quot;{{title}}&quot;&gt;{{title}}&lt;/span&gt;</code></li>
-<li>表单 <br> <code>&lt;input class=&quot;form-control&quot; value=&quot;{{first}}&quot;&gt;</code></li>
-</ul>
-</section>
-    <section class="slide"><h3 id="-">应用场景</h3>
-<p>现在只支持 <a href="http://handlebarsjs.com/">Handlebars.js</a>。</p>
-<p>下一步支持 <a href="http://gitlab.alibaba-inc.com/thx/crox">CROX</a>、<a href="http://docs.kissyui.com/1.4/docs/html/api/xtemplate/index.html">KISSY XTemplate</a>。</p>
-</section>
-    <section class="slide"><h3 id="-">浏览器支持</h3>
-<ul>
-<li><p>Internet Explorer</p>
-<p>  6+</p>
-</li>
-<li><p>Chrome, Safari, Firefox, Opera</p>
-<p>  前一个和当前版本（TODO）</p>
-</li>
-</ul>
-</section>
-    <section class="slide"><h3 id="api">API</h3>
-<ul>
-<li><p>BiSheng.bind(data, tpl, callback)</p>
-<p>  在模板和数据之间执行双向绑定。</p>
-</li>
-<li><p>BiSheng.unbind(data, tpl)</p>
-<p>  解除数据和模板之间的双向绑定。</p>
-</li>
-</ul>
-<p>详细说明：<a href="bisheng.html">HTML</a>，<a href="bisheng.md">Markdown</a>。</p>
-</section>
-    <section class="slide"><h3 id="-">示例</h3>
-<pre><code>// HTML 模板
-var tpl = &#39;{{title}}&#39;
-// 数据对象
-var data = {
-  title: &#39;foo&#39;
-}
-// 执行双向绑定
-BiSheng.bind(data, tpl, function(content){
-  // 然后在回调函数中将绑定后的 DOM 元素插入文档中
-  $(&#39;div.container&#39;).append(content)
-});
-
-// 改变数据 data.title，对应的文档区域会更新
-data.title = &#39;bar&#39;
-
-// 解除双向绑定
-BiSheng.unbind(data, tpl);
-
-// 改变数据 data.title，对应的文档区域不会更新
-data.title = &#39;foo&#39;</code></pre>
-</section>
-    <section class="slide"><h3 id="api">API</h3>
-<ul>
-<li><p>BiSheng.watch(data, fn(changes))</p>
-<p>  为所有属性添加监听函数。</p>
-</li>
-<li><p>BiSheng.unwatch(data, fn)</p>
-<p>  移除监听函数。</p>
-</li>
-</ul>
-<p>详细说明：<a href="bisheng.html">HTML</a>，<a href="bisheng.md">Markdown</a>。</p>
-</section>
-    <section class="slide"><h3 id="-">示例</h3>
-<pre><code>var data = { foo: &#39;foo&#39; }
-BiSheng.watch(data, function(changes){
-    console.log(JSON.stringify(changes, null, 4))
-})
-
-data.foo = &#39;bar&#39;
-// =&gt; 见下一页
-
-setTimeout(function(){
-    BiSheng.unwatch(data)
-    data.foo = &#39;foo&#39;
-    // =&gt; 
-}, 1000)</code></pre>
-</section>
-    <section class="slide"><h3 id="-">示例</h3>
-<pre><code>// =&gt;
-[
-    {
-        &quot;type&quot;: &quot;update&quot;,
-        &quot;path&quot;: [
-            3,
-            &quot;foo&quot;
-        ],
-        &quot;value&quot;: &quot;bar&quot;,
-        &quot;oldValue&quot;: &quot;foo&quot;,
-        &quot;root&quot;: {
-            &quot;foo&quot;: &quot;bar&quot;
-        },
-        &quot;context&quot;: {
-            &quot;foo&quot;: &quot;bar&quot;
-        }
-    }
-]</code></pre>
-</section>
-    <section class="slide"><h3 id="-">开发方式</h3>
-<ul>
-<li>事件驱动编程 &amp; 运行</li>
-<li>数据驱动编程 &amp; 运行</li>
-</ul>
-<p>数据要比事件更容易驾驭。</p>
-<!-- 所以接下来，如果要在复杂数据和复杂代码中选择一个，宁愿选择前者。更进一步：在设计中，你应该主动将代码的复杂度转移到数据之中去。 -->
-
-<p><a href="http://localhost:5000/test/bisheng.html?noglobals=true&amp;notrycatch=true&amp;testNumber=66">http://localhost:5000/test/bisheng.html?noglobals=true&amp;notrycatch=true&amp;testNumber=66</a></p>
-</section>
-    <section class="slide"><h3 id="-">工作原理</h3>
+    <section class="slide"><h3 id="-">实现细节</h3>
+<p>BiSheng.js 会修改模板语法树，插入定位符，通过定位符来建立数据和 DOM 元素之间的连接。</p>
 <ol>
-<li>修改语法树，插入定位符。</li>
+<li>修改模板语法树，插入定位符。</li>
 <li>渲染模板和定位符。</li>
 <li>解析定位符。</li>
 <li>建立数据到 DOM 元素的连接。</li>
 <li>建立 DOM 元素到数据的连接。</li>
 </ol>
-<p>详细说明：<a href="how.html">HTML</a>，<a href="how.md">Markdown</a>。</p>
 </section>
-    <section class="slide"><h4 id="-title-">以模板 <code>{{title}}</code> 为例</h4>
-<pre><code>// HTML 模板
-var tpl = &#39;{{title}}&#39;
-// 数据对象
-var data = {
-  title: &#39;注意，title 的值在这里&#39;
-}
-// 执行双向绑定
-BiSheng.bind(data, tpl, function(content){
-  // 然后在回调函数中将绑定后的 DOM 元素插入文档中
-  $(&#39;div.container&#39;).append(content)
-});
-// 改变数据 data.title，对应的文档区域会更新
-data.title = &#39;bar&#39;</code></pre>
+    <section class="slide"><h3 id="-">实现细节</h3>
+<p>关于 BiSheng.js 的实现原理，您可以在 <a href="http://bishengjs.com/doc/how.html">How BiSheng.js works</a> 看到详细的设计过程和原理分析。</p>
 </section>
-    <section class="slide"><h4 id="1-">1. 修改语法树，插入定位符</h4>
-<pre><code>&lt;script guid=&quot;1&quot; slot=&quot;start&quot; type=&quot;&quot; path=&quot;{{$lastest title}}&quot; isHelper=&quot;false&quot;&gt;&lt;/script&gt;
-&lt;script guid=&quot;1&quot; slot=&quot;end&quot;&gt;&lt;/script&gt;</code></pre>
-<p></p>
-
-<pre><code>Handlebars.registerHelper(&#39;$lastest&#39;, function(items, options) {
-    return items &amp;&amp; items.$path || this &amp;&amp; this.$path
-})</code></pre>
-</section>
-    <section class="slide"><h4 id="2-">2. 渲染模板和定位符</h4>
-<pre><code>Handlebars.compile(ast)(data)</code></pre>
-<p></p>
-
-<pre><code>&amp;lt;script guid=&quot;1&quot; slot=&quot;start&quot; type=&quot;&quot; path=&quot;1.title&quot; isHelper=&quot;false&quot;&amp;gt;&amp;lt;/script&amp;gt;
-注意，title 的值在这里
-&amp;lt;script guid=&quot;1&quot; slot=&quot;end&quot;&amp;gt;&amp;lt;/script&amp;gt;</code></pre>
-</section>
-    <section class="slide"><h4 id="3-dom-">3. 扫描 DOM 元素，解析定位符</h4>
-<pre><code>&lt;script guid=&quot;1&quot; slot=&quot;start&quot; type=&quot;&quot; path=&quot;1.title&quot; isHelper=&quot;false&quot;&gt;&lt;/script&gt;
-注意，title 的值在这里
-&lt;script guid=&quot;1&quot; slot=&quot;end&quot;&gt;&lt;/script&gt;</code></pre>
-</section>
-    <section class="slide"><h4 id="4-dom-">4. 建立数据到 DOM 元素的连接</h4>
-<pre><code>script[slot=&quot;start&quot;][path=&quot;1.title&quot;]</code></pre>
-</section>
-    <section class="slide"><h4 id="5-dom-">5. 建立 DOM 元素到数据的连接</h4>
-<pre><code>$(target).on(&#39;change.bisheng keyup.bisheng&#39;, function(event) {
-    updateValue(data, path, event.target)
-})</code></pre>
-</section>
-    <section class="slide"><h3 id="-">回顾一下</h3>
-<ul>
-<li>应用场景</li>
-<li>浏览器支持</li>
-<li>API</li>
-<li>示例</li>
-<li>开发方式</li>
-<li>工作原理</li>
-</ul>
-<blockquote>
-<p>只做一件事，并做好。——《Unix 编程艺术》</p>
-</blockquote>
+    <section class="slide"><h3 id="-">未来规划</h3>
+<p>支持 <a href="http://gitlab.alibaba-inc.com/thx/crox">CROX</a>、<a href="http://docs.kissyui.com/1.4/docs/html/api/xtemplate/index.html">KISSY XTemplate</a>。</p>
 </section>
     <section class="slide"><h3 id="-">写作工具</h3>
 <ul>
 <li><a href="https://github.com/jdan/cleaver/">https://github.com/jdan/cleaver/</a></li>
 <li><a href="https://github.com/Bartvds/grunt-cleaver">https://github.com/Bartvds/grunt-cleaver</a></li>
 </ul>
+</section>
+    <section class="slide"><h3 id="-">回顾一下</h3>
+<ul>
+<li>BiSheng.js 是什么</li>
+<li>应用场景和示例</li>
+<li>实现细节</li>
+</ul>
+<blockquote>
+<p>只做一件事，并做好。——《Unix 编程艺术》</p>
+</blockquote>
+</section>
+    <section class="slide"><h3 id="-">问答</h3>
+<ol>
+<li><p>已经有了 AngularJS、Ember.js 等等优秀的双向绑定框架，为什么开发 BiSheng.js 呢？</p>
+<p> 兴趣 &amp; 学习 &amp; KPI。</p>
+</li>
+<li><p>已经有了 AngularJS、Ember.js 等等优秀的双向绑定框架，为什么选择 BiSheng.js 呢？</p>
+<ul>
+<li>太多的概念和编码约定</li>
+<li>对既有架构的冲击大</li>
+<li>DOM 模板天生不支持 IE6、IE7</li>
+</ul>
+</li>
+</ol>
+</section>
+    <section class="slide"><h3 id="-">问答</h3>
+<p style="text-align: center; font-size: 128px; ">？</p></section>
+    <section class="slide"><h3 id="-">一点私货</h3>
+<p style="text-align: center;">
+    <img src="http://nuysoft.com/assets/jquery_internals/shupi.jpg" width="256">
+</p></section>
+    <section class="slide"><h3 id="-jquery-">《jQuery 技术内幕》</h3>
+<ul>
+<li>采用由浅入深的方式，先概述功能、用法、结构和实现原理，然后介绍关键步骤和和分析源码实现。</li>
+<li>每个模块辅以大量插图，总结了公开方法和底层方法的调用关系、执行过程。</li>
+</ul>
+</section>
+    <section class="slide"><h3 id="-jquery-">《jQuery 技术内幕》</h3>
+<ul>
+<li>前端工程师通过阅读本书可以巩固基础知识、洞悉 jQuery 背后的实现原理、学习进行源码分析的方法和技巧，从而快速成长。</li>
+<li>资深前端通过阅读本书可以借鉴和印证 jQuery 的架构设计和实现方式。</li>
+</ul>
+</section>
+    <section class="slide"><h3 id="-">没有了</h3>
+<p style="text-align: center; font-size: 64px;">谢谢各位的聆听</p>
+
+<p>无论您对双向绑定有什么见解，或者对 BiSheng.js 有什么建议，或者遇到什么不爽的地方，欢迎来 <a href="https://github.com/thx/bisheng/issues/">砸砖</a> 和 <a href="mailto:nuysoft@gmail.com">交流</a>。</p>
+<!-- 
+    BiSheng.js 才刚刚起步，尚不完善。
+    如果从我今天的分享中学到了东西或有所启发，请打赏一个赞。
+ -->
+
 <p><style type="text/css">
     pre {
         padding: 0px;
@@ -845,7 +759,10 @@ data.title = &#39;bar&#39;</code></pre>
 <script src="../bower_components/highlightjs/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script></section>
     <section class="slide"><div class="author">
-  <h1 class="name">墨智</h1>
+  <h1 class="name">墨智 &#x2F; 高云</h1>
+    <h3 class="url">
+      <a href="http://nuysoft.com">http://nuysoft.com</a>
+    </h3>
     <h3 class="email">
       <a href="mailto:mozhi.gyy@alibaba-inc.com">mozhi.gyy@alibaba-inc.com</a>
     </h3>

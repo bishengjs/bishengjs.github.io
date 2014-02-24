@@ -193,7 +193,7 @@ BiSheng.js 的 API 非常简洁和符合直觉，总共只有 5 个公开方法�
 <a name="表单"></a>
 ### 表单
 
-我们以 `<input value="{{first}}">` 为例.
+我们以 `<input value="{{first}}">` 为例。
 
 <iframe width="100%" height="160" src="http://jsfiddle.net/MjV6S/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
