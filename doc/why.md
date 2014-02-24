@@ -14,7 +14,7 @@
 
 ## 文前
 
-这篇文章主要整理本人对前端开发模式变迁的理解，和在学习数据双向绑定过程中的体悟，简要介绍业内流行作品的原理，以及相较之下 BiSheng.js 的亮点。
+这篇文章主要整理本人对前端开发模式变迁的理解，和在学习数据双向绑定过程中的体悟，简要介绍了业内流行作品的原理，以及相较之下 BiSheng.js 的亮点。
 
 <!-- 
 BiSheng.js 
@@ -76,7 +76,7 @@ jQuery 在浏览器事件模型的基础上，封装了浏览器差异，并提�
 
 数据驱动编程（Data-Driven Programming，DDP）是指，基于数据层，通过定义（采集、统计）、显示、维护数据（增加、删除、修改），来完成开发过程。
 
-> 从工作原理上说，数据驱动是以自定义的数据事件来驱动 DOM 更新，所以也算是事件驱动的一种，不过与传统的 DOM 事件驱动在思路和实现上迥然不同，所以<!-- ，理论上的争辩实无甚意义， -->各位了解即可。
+> 从工作原理上说，数据驱动是以自定义的数据事件来驱动 DOM 更新，所以也算是事件驱动的一种，不过与传统的 DOM 事件驱动在思路和实现上迥然不同，<!--所以 ，理论上的争辩实无甚意义， -->各位了解即可。
 
 前端应用程序应该以数据为中心，而不应该以处理和展现为中心。因为数据结构是稳定、唯一的，而业务和展现则是多变、多场景的。
 
@@ -90,7 +90,7 @@ jQuery 在浏览器事件模型的基础上，封装了浏览器差异，并提�
 
 ## BiSheng.js
 
-BiSheng.js 是一款小巧轻便的数据双向绑定库，旨在帮助前端攻城师快速开发Web组件和应用。支持所有主流浏览器（包括 IE6），可以单独使用，也可以方便地集成到第三方框架。目前基于模板引擎 Handlebars.js 实现，可扩展支持其他基于语法树的模板引擎。
+BiSheng.js 是一款小巧轻便的数据双向绑定库，旨在帮助前端攻城师快速开发 Web 组件和应用。支持所有主流浏览器（包括 IE6），可以单独使用，也可以方便地集成到第三方框架。目前基于模板引擎 Handlebars.js 实现，可扩展支持其他基于语法树的模板引擎。
 
 **设计原则**
 
@@ -109,7 +109,7 @@ BiSheng.js 的设计和开发实践了以下这些 Unix 哲学和原则：
 
 **已经有了 AngularJS、Ember.js 等等优秀的双向绑定框架，为什么选择 BiSheng.js 呢？**
 
-类似 AngularJS 和 Ember.js 这样的框架，除了支持数据绑定和事件绑定之外，也引入了远超这些便捷功能的概念编码约定，学习成本和对既有架构的冲击甚大，所以作为“思想库”借鉴可以，实施时则需谨慎权衡。BiSheng.js 正是基于这种考量，只实现了数据双向绑定，希望可以轻量地集成到既有的框架、库、组件和业务场景中。在接下来介绍 BiSheng.js 的 API 时会看到这一点。
+类似 AngularJS 和 Ember.js 这样的框架，除了支持数据绑定和事件绑定之外，也引入了远超这些便捷功能的概念和编码约定，增加了学习成本，而且，实施成本对既有架构的冲击甚大，所以作为“思想库”学习借鉴可以，实施时则需谨慎权衡。BiSheng.js 正是基于这种考量，只实现了数据双向绑定，希望可以轻量地集成到既有的框架、库、组件和业务场景中。在接下来介绍 BiSheng.js 的 API 时会看到这一点。
 
 **API**
 
@@ -145,7 +145,7 @@ BiSheng.js 的 API 非常简洁和符合直觉，总共只有 5 个公开方法�
 <a name="表达式"></a>
 ### 表达式
 
-以 `{{foo}}` 为例。
+我们以 `{{foo}}` 为例。
 
 1. 首先，我们定义容器节点 `div.container`、模板 `tpl` 和数据 `data`：
 
@@ -156,7 +156,7 @@ BiSheng.js 的 API 非常简洁和符合直觉，总共只有 5 个公开方法�
             foo: 'foo'
         }
 
-    准备工作已经就绪，可以开始绑定模板 `tpl` 和数据 `data` 了。
+    所有的准备工作已经就绪（这些步骤和普通的开发过程没什么区别），可以开始绑定模板 `tpl` 和数据 `data` 了。
 
 2. 然后，调用方法 `BiSheng.bind(data, tpl, context)` 执行双向绑定：
 
@@ -179,21 +179,21 @@ BiSheng.js 的 API 非常简洁和符合直觉，总共只有 5 个公开方法�
 <a name="逻辑块"></a>
 ### 逻辑块
 
-以 `{{#with story}}{{{intro}}}{{/with}}` 为例。
+我们以 `{{#with story}}{{{intro}}}{{/with}}` 为例。
 
 <iframe width="100%" height="280" src="http://jsfiddle.net/nNsrQ/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 <a name="HTML 属性"></a>
 ### HTML 属性
 
-以 `<span title="{{title}}">{{title}}</span>` 为例。
+我们以 `<span title="{{title}}">{{title}}</span>` 为例。
 
-<iframe width="100%" height="250" src="http://jsfiddle.net/nv7er/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>    
+<iframe width="100%" height="250" src="http://jsfiddle.net/nv7er/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 <a name="表单"></a>
 ### 表单
 
-以 `<input value="{{first}}">` 为例.
+我们以 `<input value="{{first}}">` 为例.
 
 <iframe width="100%" height="160" src="http://jsfiddle.net/MjV6S/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
