@@ -91,8 +91,8 @@ controls: true
     <div style="margin-bottom: 4px;"><https://github.com/thx/bisheng></div>
     <div style="margin-bottom: 4px;"><http://bishengjs.com/></div>
     <div>
-        <!-- <iframe src="http://ghbtns.com/github-btn.html?user=thx&repo=bisheng&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="131" height="30"></iframe>
-        <iframe src="http://ghbtns.com/github-btn.html?user=thx&repo=bisheng&type=fork&count=true&size=large"allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe> -->
+        <iframe src="http://ghbtns.com/github-btn.html?user=thx&repo=bisheng&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="131" height="30"></iframe>
+        <iframe src="http://ghbtns.com/github-btn.html?user=thx&repo=bisheng&type=fork&count=true&size=large"allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
     </div>
 </div>
 
@@ -361,6 +361,13 @@ BiSheng.js 的 API 非常简洁和符合直觉，总共只有 5 个公开方法�
 详细的 API 文档，请访问 [HTML](/doc/bisheng.html) 或 [Markdown](/doc/bisheng.md)。
 
 ![](image/bishengjs_api.png)
+
+--
+### 实现细节
+
+1. 需要能够监听到数据的变化。
+2. 需要能够将数据的属性关联到 DOM 元素上。
+3. 需要能够监听到表单元素的变化。
 
 --
 ### 实现细节

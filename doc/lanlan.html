@@ -476,8 +476,8 @@ pre .chunk {
     <div style="margin-bottom: 4px;"><a href="https://github.com/thx/bisheng">https://github.com/thx/bisheng</a></div>
     <div style="margin-bottom: 4px;"><a href="http://bishengjs.com/">http://bishengjs.com/</a></div>
     <div>
-        <!-- <iframe src="http://ghbtns.com/github-btn.html?user=thx&repo=bisheng&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="131" height="30"></iframe>
-        <iframe src="http://ghbtns.com/github-btn.html?user=thx&repo=bisheng&type=fork&count=true&size=large"allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe> -->
+        <iframe src="http://ghbtns.com/github-btn.html?user=thx&repo=bisheng&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="131" height="30"></iframe>
+        <iframe src="http://ghbtns.com/github-btn.html?user=thx&repo=bisheng&type=fork&count=true&size=large"allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
     </div>
 </div></section>
     <section class="slide"><h3 id="-">毕昇</h3>
@@ -676,6 +676,13 @@ var data = {
     <section class="slide"><h3 id="-">实现细节</h3>
 <p>详细的 API 文档，请访问 <a href="/doc/bisheng.html">HTML</a> 或 <a href="/doc/bisheng.md">Markdown</a>。</p>
 <p><img src="image/bishengjs_api.png" alt=""></p>
+</section>
+    <section class="slide"><h3 id="-">实现细节</h3>
+<ol>
+<li>需要能够监听到数据的变化。</li>
+<li>需要能够将数据的属性关联到 DOM 元素上。</li>
+<li>需要能够监听到表单元素的变化。</li>
+</ol>
 </section>
     <section class="slide"><h3 id="-">实现细节</h3>
 <p>BiSheng.js 会修改模板语法树，插入定位符，通过定位符来建立数据和 DOM 元素之间的连接。</p>
