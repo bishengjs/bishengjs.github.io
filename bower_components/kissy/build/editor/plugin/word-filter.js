@@ -1,7 +1,7 @@
 /*
-Copyright 2013, KISSY v1.41
+Copyright 2014, KISSY v1.42
 MIT Licensed
-build time: Dec 4 22:14
+build time: Feb 27 14:55
 */
 /*
  Combined processedModules by KISSY Module Compiler: 
@@ -522,7 +522,7 @@ KISSY.add("editor/plugin/word-filter", ["html-parser"], function(S, require) {
           return node.nodeType === 3 && !containsNothingButSpaces(node.parentNode)
         });
         var bullet = bulletText && bulletText.parentNode;
-        if(!bullet.getAttribute("style")) {
+        if(bullet && !bullet.getAttribute("style")) {
           bullet.setAttribute("style", "mso-list: Ignore;")
         }
       }

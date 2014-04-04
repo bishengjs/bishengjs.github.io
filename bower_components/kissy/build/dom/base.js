@@ -1,7 +1,7 @@
 /*
-Copyright 2013, KISSY v1.41
+Copyright 2014, KISSY v1.42
 MIT Licensed
-build time: Dec 13 16:43
+build time: Feb 26 18:57
 */
 /*
  Combined processedModules by KISSY Module Compiler: 
@@ -390,8 +390,16 @@ KISSY.add("dom/base/class", ["./api"], function(S, require) {
     }
     return false
   }, _addClass:batchClassList("add"), _removeClass:batchClassList("remove"), _toggleClass:batchClassList("toggle"), hasClass:function(selector, className) {
-    var elem = Dom.get(selector);
-    return elem && elem.nodeType === NodeType.ELEMENT_NODE && Dom._hasClass(elem, strToArray(className))
+    var ret = false;
+    className = strToArray(className);
+    Dom.query(selector).each(function(elem) {
+      if(elem.nodeType === NodeType.ELEMENT_NODE && Dom._hasClass(elem, className)) {
+        ret = true;
+        return false
+      }
+      return undefined
+    });
+    return ret
   }, replaceClass:function(selector, oldClassName, newClassName) {
     Dom.removeClass(selector, oldClassName);
     Dom.addClass(selector, newClassName)
@@ -680,7 +688,7 @@ KISSY.add("dom/base/create", ["./api"], function(S, require) {
       }
     })(creatorsMap[p])
   }
-  creatorsMap.option = creatorsMap.optgroup = function(html, ownerDoc) {
+  creators.option = creators.optgroup = function(html, ownerDoc) {
     return create('<select multiple="multiple">' + html + "</select>", undefined, ownerDoc)
   };
   return Dom
@@ -1577,9 +1585,9 @@ KISSY.add("dom/base/selector", ["./api"], function(S, require) {
   var doc = S.Env.host.document, docElem = doc.documentElement, matches = docElem.matches || docElem.webkitMatchesSelector || docElem.mozMatchesSelector || docElem.oMatchesSelector || docElem.msMatchesSelector, supportGetElementsByClassName = "getElementsByClassName" in doc, isArray = S.isArray, makeArray = S.makeArray, isDomNodeList = Dom.isDomNodeList, SPACE = " ", push = Array.prototype.push, rClassSelector = /^\.([\w-]+)$/, rIdSelector = /^#([\w-]+)$/, rTagSelector = /^([\w-])+$/, rTagIdSelector = 
   /^([\w-]+)#([\w-]+)$/, rSimpleSelector = /^(?:#([\w-]+))?\s*([\w-]+|\*)?\.?([\w-]+)?$/, trim = S.trim;
   function queryEach(f) {
-    var els = this, l = els.length, i;
+    var self = this, l = self.length, i;
     for(i = 0;i < l;i++) {
-      if(f(els[i], i) === false) {
+      if(f(self[i], i) === false) {
         break
       }
     }
@@ -1635,7 +1643,7 @@ KISSY.add("dom/base/selector", ["./api"], function(S, require) {
             ret = [doc.body]
           }else {
             if(rClassSelector.test(selector) && supportGetElementsByClassName) {
-              ret = doc.getElementsByClassName(RegExp.$1)
+              ret = makeArray(doc.getElementsByClassName(RegExp.$1))
             }else {
               if(rTagIdSelector.test(selector)) {
                 el = Dom._getElementById(RegExp.$2, doc);
@@ -1646,7 +1654,7 @@ KISSY.add("dom/base/selector", ["./api"], function(S, require) {
                   ret = el ? [el] : []
                 }else {
                   if(rTagSelector.test(selector)) {
-                    ret = doc.getElementsByTagName(selector)
+                    ret = makeArray(doc.getElementsByTagName(selector))
                   }else {
                     if(isSimpleSelector(selector) && supportGetElementsByClassName) {
                       var parts = selector.split(/\s+/), partsLen, parents = contexts, parentIndex, parentsLen;
@@ -1657,7 +1665,7 @@ KISSY.add("dom/base/selector", ["./api"], function(S, require) {
                         var part = parts[i], newParents = [], matches;
                         for(parentIndex = 0, parentsLen = parents.length;parentIndex < parentsLen;parentIndex++) {
                           matches = part(parents[parentIndex]);
-                          newParents.push.apply(newParents, S.makeArray(matches))
+                          newParents.push.apply(newParents, makeArray(matches))
                         }
                         parents = newParents;
                         if(!parents.length) {
@@ -1682,7 +1690,7 @@ KISSY.add("dom/base/selector", ["./api"], function(S, require) {
           }
         }
       }else {
-        if(selector.nodeType || selector.setTimeout) {
+        if(selector.nodeType || S.isWindow(selector)) {
           ret = [selector]
         }else {
           if(selector.getDOMNodes) {
@@ -1737,7 +1745,7 @@ KISSY.add("dom/base/selector", ["./api"], function(S, require) {
     var bit = a.compareDocumentPosition(b) & 4;
     return bit ? -1 : 1
   }, _getElementsByTagName:function(name, context) {
-    return S.makeArray(context.querySelectorAll(name))
+    return makeArray(context.querySelectorAll(name))
   }, _getElementById:function(id, doc) {
     return doc.getElementById(id)
   }, _getSimpleAttr:getAttr, _isTag:isTag, _hasSingleClass:hasSingleClass, _matchesInternal:function(str, seeds) {

@@ -1,7 +1,7 @@
 /*
-Copyright 2013, KISSY v1.41
+Copyright 2014, KISSY v1.42
 MIT Licensed
-build time: Dec 9 22:41
+build time: Jan 13 14:57
 */
 /*
  Combined processedModules by KISSY Module Compiler: 
@@ -139,7 +139,7 @@ KISSY.add("editor/utils", ["node", "./base"], function(S, require) {
       }
       url += "t=" + encodeURIComponent(Config.tag)
     }
-    return Config.base + "editor/" + url
+    return S.config("base") + "editor/" + url
   }, lazyRun:function(obj, before, after) {
     var b = obj[before], a = obj[after];
     obj[before] = function() {
@@ -1605,7 +1605,7 @@ KISSY.add("editor/range", ["./dom", "node", "./utils", "./walker", "./base", "./
       }
     }
     return function(unit) {
-      var self = this;
+      var self = this, enlargeable;
       switch(unit) {
         case KER.ENLARGE_ELEMENT:
           if(self.collapsed) {
@@ -1650,7 +1650,7 @@ KISSY.add("editor/range", ["./dom", "node", "./utils", "./walker", "./base", "./
           walker = new Walker(walkerRange);
           walker.guard = unit === KER.ENLARGE_LIST_ITEM_CONTENTS ? tailBrGuard : boundaryGuard;
           blockBoundary = NULL;
-          var enlargeable = walker.lastForward();
+          enlargeable = walker.lastForward();
           blockBoundary = blockBoundary || body;
           self.setEndAt(blockBoundary, !enlargeable && self.checkEndOfBlock() || enlargeable && blockBoundary.contains(enlargeable) ? KER.POSITION_BEFORE_END : KER.POSITION_BEFORE_START);
           if(tailBr) {
@@ -3217,7 +3217,7 @@ KISSY.add("editor/plugin-meta", [], function() {
     config({"editor/plugin/element-path":{requires:["editor"]}});
     config({"editor/plugin/fake-objects":{requires:["editor", "html-parser"]}});
     config({"editor/plugin/flash-bridge":{requires:["editor", "swf", "event"]}});
-    config({"editor/plugin/flash-common/base-class":{requires:["editor/plugin/flash-common/utils", "base", "editor", "editor/plugin/dialog-loader", "editor/plugin/bubble"]}});
+    config({"editor/plugin/flash-common/base-class":{requires:["editor/plugin/flash-common/utils", "base", "editor", "editor/plugin/dialog-loader", "editor/plugin/bubble", "editor/plugin/contextmenu"]}});
     config({"editor/plugin/flash-common/utils":{requires:["swf"]}});
     config({"editor/plugin/flash":{requires:["editor", "editor/plugin/flash-common/base-class", "editor/plugin/flash-common/utils", "editor/plugin/fake-objects", "editor/plugin/button"]}});
     config({"editor/plugin/flash/dialog":{requires:["editor", "editor/plugin/flash-common/utils", "editor/plugin/dialog", "editor/plugin/menubutton"]}});
@@ -3232,7 +3232,7 @@ KISSY.add("editor/plugin-meta", [], function() {
     config({"editor/plugin/fore-color/cmd":{requires:["editor/plugin/color/cmd"]}});
     config({"editor/plugin/heading":{requires:["editor/plugin/menubutton", "editor", "editor/plugin/heading/cmd"]}});
     config({"editor/plugin/heading/cmd":{requires:["editor"]}});
-    config({"editor/plugin/image":{requires:["editor/plugin/button", "editor", "editor/plugin/bubble", "editor/plugin/dialog-loader"]}});
+    config({"editor/plugin/image":{requires:["editor/plugin/button", "editor", "editor/plugin/bubble", "editor/plugin/dialog-loader", "editor/plugin/contextmenu"]}});
     config({"editor/plugin/image/dialog":{requires:["editor", "io", "editor/plugin/dialog", "tabs", "editor/plugin/menubutton"]}});
     config({"editor/plugin/indent":{requires:["editor", "editor/plugin/indent/cmd", "editor/plugin/button"]}});
     config({"editor/plugin/indent/cmd":{requires:["editor/plugin/dent-cmd"]}});
@@ -3281,7 +3281,7 @@ KISSY.add("editor/plugin-meta", [], function() {
     config({"editor/plugin/unordered-list":{requires:["editor/plugin/list-utils/btn", "editor/plugin/unordered-list/cmd"]}});
     config({"editor/plugin/unordered-list/cmd":{requires:["editor", "editor/plugin/list-utils/cmd"]}});
     config({"editor/plugin/video":{requires:["editor", "editor/plugin/flash-common/utils", "editor/plugin/flash-common/base-class", "editor/plugin/fake-objects", "editor/plugin/button"]}});
-    config({"editor/plugin/video/dialog":{requires:["editor", "editor/plugin/flash/dialog", "editor/plugin/menubutton"]}});
+    config({"editor/plugin/video/dialog":{requires:["editor", "io", "editor/plugin/flash/dialog", "editor/plugin/menubutton"]}});
     config({"editor/plugin/word-filter":{requires:["html-parser"]}});
     config({"editor/plugin/xiami-music":{requires:["editor", "editor/plugin/flash-common/base-class", "editor/plugin/flash-common/utils", "editor/plugin/fake-objects", "editor/plugin/button"]}});
     config({"editor/plugin/xiami-music/dialog":{requires:["editor", "editor/plugin/flash/dialog", "editor/plugin/menubutton"]}})
@@ -4710,7 +4710,8 @@ KISSY.add("editor", ["node", "editor/iframe-content-tpl", "editor/base", "editor
     focusManager.add(self)
   }
   function prepareIFrameHTML(id, customStyle, customLink, data) {
-    var links = "", i, innerCssFile = Utils.debugUrl("theme/editor-iframe.css");
+    var links = "", i;
+    var innerCssFile = Utils.debugUrl("theme/editor-iframe.css");
     customLink = customLink.concat([]);
     customLink.unshift(innerCssFile);
     for(i = 0;i < customLink.length;i++) {

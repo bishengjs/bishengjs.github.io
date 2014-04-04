@@ -1,7 +1,7 @@
 /*
-Copyright 2013, KISSY v1.41
+Copyright 2014, KISSY v1.42
 MIT Licensed
-build time: Dec 4 22:10
+build time: Jan 13 14:56
 */
 /*
  Combined processedModules by KISSY Module Compiler: 
@@ -9,11 +9,12 @@ build time: Dec 4 22:10
  editor/plugin/image
 */
 
-KISSY.add("editor/plugin/image", ["./button", "editor", "./bubble", "./dialog-loader"], function(S, require) {
+KISSY.add("editor/plugin/image", ["./button", "editor", "./bubble", "./dialog-loader", "./contextmenu"], function(S, require) {
   require("./button");
   var Editor = require("editor");
   require("./bubble");
   var DialogLoader = require("./dialog-loader");
+  require("./contextmenu");
   var UA = S.UA, Node = KISSY.NodeList, $ = S.all, checkImg = function(node) {
     node = $(node);
     if(node.nodeName() === "img" && !/(^|\s+)ke_/.test(node[0].className)) {
@@ -97,7 +98,7 @@ KISSY.add("editor/plugin/image", ["./button", "editor", "./bubble", "./dialog-lo
       bubble.on("show", function() {
         var a = bubble.get("editorSelectedEl");
         if(a) {
-          var src = a.attr("_keSaved_src") || a.attr("src");
+          var src = a.attr("_ke_saved_src") || a.attr("src");
           tipUrlEl.attr("href", src)
         }
       })

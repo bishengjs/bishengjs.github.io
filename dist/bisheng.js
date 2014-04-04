@@ -1,4 +1,4 @@
-/*! BiSheng.js 2014-02-25 03:57:59 AM CST */
+/*! BiSheng.js 2014-03-13 07:07:08 PM CST */
 /*! src/fix/prefix-1.js */
 (function(factory) {
     /*! src/expose.js */
@@ -53,7 +53,7 @@
             // define(id?, dependencies?, factory);
             // https://github.com/amdjs/amdjs-api/wiki/AMD
             if (id !== undefined) args.push(id);
-            if (id !== dependencies) args.push(dependencies);
+            if (dependencies !== undefined) args.push(dependencies);
             args.push(factory);
             define.apply(window, args);
         } else if (typeof define === "function" && define.cmd) {
@@ -61,7 +61,7 @@
             // define(id?, deps?, factory)
             // https://github.com/seajs/seajs/issues/242
             if (id !== undefined) args.push(id);
-            if (id !== dependencies) args.push(dependencies);
+            if (dependencies !== undefined) args.push(dependencies);
             args.push(factory);
             define.apply(window, args);
         } else if (typeof KISSY != "undefined") {
@@ -71,8 +71,7 @@
                 window.define = function define(id, dependencies, factory) {
                     // KISSY.add(name?, factory?, deps)
                     function proxy() {
-                        var slice = [].slice;
-                        var args = slice.call(arguments, 1, arguments.length);
+                        var args = [].slice.call(arguments, 1, arguments.length);
                         return factory.apply(window, args);
                     }
                     switch (arguments.length) {
@@ -251,6 +250,113 @@
         };
         jQuery.fn._attr = jQuery.fn.attr;
         jqLite = jQuery;
+    } else if (window.Zepto) {
+        Zepto._each = function _each(obj, callback) {
+            return Zepto.each(obj, function(key, value) {
+                if (!value.nodeType && value.length && value[0].nodeType) {
+                    Zepto._each(value, callback);
+                } else {
+                    callback.call(this, value, key);
+                }
+            });
+        };
+        Zepto.fn._each = function _each(callback) {
+            return Zepto._each(this, callback);
+        };
+        Zepto.fn._filter = function _filter(callback) {
+            return this.filter(function(index, element, array) {
+                // Zepto.each 方法不支持第二个参数 element
+                element = element || this;
+                // 交换 index、element 的位置，使之符合标准
+                return callback.call(element, element, index, array);
+            });
+        };
+        Zepto.fn._attr = Zepto.fn.attr;
+        Zepto.fn.splice = [].splice;
+        Zepto.fn.replaceAll = function replaceAll(target) {
+            /*jshint -W064 */
+            return Zepto(target).replaceWith(this);
+        };
+        // 在 Zepto 中 data 方法使用 DOM 元素的属性来存储
+        // 所以对于 name 需要替换空格
+        Zepto.fn._data = Zepto.fn.data;
+        Zepto.fn.data = function(name, value) {
+            name = name.replace(/\s/g, "-");
+            return Zepto.fn._data.call(this, name, value);
+        };
+        // 扩展 Zepto 支持克隆节点时克隆事件到新克隆的元素上
+        Zepto.cache = {};
+        Zepto.fn._on = Zepto.fn.on;
+        Zepto.fn.on = function(event, selector, data, callback, one) {
+            Zepto.fn._on.apply(this, arguments);
+            this.each(function(idx, elem) {
+                var cache = Zepto.cache[elem._zid] = Zepto.cache[elem._zid] || {};
+                var events = event.split(/\s/);
+                Zepto.each(events, function(idx, type) {
+                    cache[type] = cache[type] || [];
+                    cache[type].push({
+                        event: type,
+                        selector: selector,
+                        data: data,
+                        callback: callback,
+                        one: one
+                    });
+                });
+            });
+            return this;
+        };
+        Zepto.fn._off = Zepto.fn.off;
+        Zepto.fn.off = function(event, selector, callback) {
+            Zepto.fn._off.apply(this, arguments);
+            this.each(function(idx, elem) {
+                var cache = Zepto.cache[elem._zid];
+                var events = event.split(/\s/);
+                if (!cache) {
+                    return;
+                }
+                Zepto.each(events, function(idx, type) {
+                    // 删除所有处理函数
+                    delete cache[type];
+                });
+            });
+            return this;
+        };
+        // 在 HTMLElement.cloneNode 方法上注入克隆事件功能
+        HTMLElement.prototype._cloneNode = HTMLElement.prototype.cloneNode;
+        HTMLElement.prototype.cloneNode = function() {
+            var cloneElement = HTMLElement.prototype._cloneNode.call(this, arguments);
+            // clone event
+            cloneEvent(this, cloneElement);
+            /**
+             * @param origin
+             * @param target
+             */
+            function cloneEvent(origin, target) {
+                /*jshint -W064 */
+                Zepto(origin).children().each(function(idx, element) {
+                    // clone event
+                    if (typeof this._zid === "number") {
+                        /*jshint -W064 */
+                        var cloneChildren = Zepto(target).children().eq(idx);
+                        var events = Zepto.cache[this._zid];
+                        Zepto.each(events, function(type, handlers) {
+                            Zepto.each(handlers, function(idx, handler) {
+                                /*jshint -W064 */
+                                Zepto(cloneChildren).on(handler.event, handler.selector, handler.data, handler.callback, handler.one);
+                            });
+                        });
+                    }
+                    // clone children event
+                    /*jshint -W064 */
+                    if (Zepto(element).children().length) {
+                        /*jshint -W064 */
+                        cloneEvent(element, Zepto(target).children().eq(idx)[0]);
+                    }
+                });
+            }
+            return cloneElement;
+        };
+        jqLite = Zepto;
     }
     /*! src/loop.js */
     // 运行模式
@@ -1205,71 +1311,62 @@
         }
         /*
             更新属性 value 对应的数据
+            TODO:
+                input 
+                    radio checkbox
+                select
+                    multi?
+                textarea
          */
+        var updateValueHooks = {
+            text: function($target) {
+                $target.data("user is editing", true);
+                return $target.val();
+            },
+            radio: function($target) {
+                return false;
+            },
+            checkbox: function($target) {
+                return false;
+            },
+            _default: function($target) {
+                return $target.val();
+            }
+        };
         function updateValue(data, path, target) {
             for (var index = 1; index < path.length - 1; index++) {
                 data = data[path[index]];
             }
-            var $target = jqLite(target), value;
-            switch (target.nodeName.toLowerCase()) {
-              case "input":
-                switch (target.type) {
-                  case "text":
-                    $target.data("user is editing", true);
-                    value = $target.val();
-                    break;
-
-                  case "radio":
-                  // TODO
-                    case "checkbox":
-                    // TODO
-                    return;
-
-                  default:
-                    value = $target.val();
-                }
-                break;
-
-              case "select":
-                value = $target.val();
-                break;
-
-              case "textarea":
-                value = $target.val();
-                break;
-
-              default:
-                value = $target.val();
-            }
-            data[path[path.length - 1]] = value;
+            var hook = updateValueHooks[target.type] || updateValueHooks[target.nodeName.toLowerCase()] || updateValueHooks._default;
+            var value = hook(jqLite(target));
+            if (value !== false) data[path[path.length - 1]] = value;
         }
         /*
             更新属性 checked 对应的数据
+            TODO:
+                input
+                    radio
+                    checkbox
         */
+        var updateCheckedHooks = {
+            radio: function($target, data) {
+                var name = $target.attr("name");
+                var value = $target.prop("checked");
+                if (name && value && name in data) data[name] = $target.val();
+                return value;
+            },
+            checkbox: function($target, data) {
+                return $target.prop("checked");
+            },
+            _default: function($target, data) {}
+        };
         function updateChecked(data, path, target) {
             for (var index = 1; index < path.length - 1; index++) {
                 data = data[path[index]];
             }
-            var $target = jqLite(target), value, name;
-            switch (target.nodeName.toLowerCase()) {
-              case "input":
-                switch (target.type) {
-                  case "radio":
-                    // TODO
-                    value = $target.prop("checked");
-                    name = $target.attr("name");
-                    if (name && value && name in data) data[name] = $target.val();
-                    break;
-
-                  case "checkbox":
-                    // TODO
-                    value = $target.prop("checked");
-                    break;
-                }
-                break;
-
-              default:            }
-            data[path[path.length - 1]] = value;
+            var hook = updateCheckedHooks[target.type] || updateCheckedHooks[target.nodeName.toLowerCase()] || updateCheckedHooks._default;
+            var value = hook(jqLite(target), data);
+            if (value !== undefined) data[path[path.length - 1]] = value;
         }
         return {
             scan: scan
