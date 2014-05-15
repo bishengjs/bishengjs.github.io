@@ -1,11 +1,11 @@
 {
   "name": "mockjs",
   "homepage": "https://github.com/nuysoft/Mock",
-  "_release": "0d15cbe358",
+  "_release": "54f84f3863",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "0d15cbe358f752d058ff47db3b041fa6d02fb5d5"
+    "commit": "54f84f386325325c771b934f889a64886e6a1310"
   },
   "_source": "git://github.com/nuysoft/Mock.git",
   "_target": "*",
