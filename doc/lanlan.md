@@ -199,12 +199,13 @@ controls: true
 
 * 基于模板引擎 Handlebars.js 实现
 * 可扩展支持其他基于语法树的模板引擎
-* 兼容 jQuery 和 KISSY
+* 兼容 jQuery、Zepto.js 和 KISSY
 
 <p class="dependencies">
     <img style="background-color: #F7931E;" src="image/logo_handlebars.png">
-    <img style="background-color: #0769AD;" src="image/logo-jquery.png">
+    <img style="background-color: #0769AD;" src="image/logo_jquery.png">
     <img style="background-color: #EDEDED;" src="image/logo_kissy.png">
+    <img style="background-color: #F3EAFF;" src="image/logo_zepto.png">
 </p>
 
 --
@@ -451,7 +452,7 @@ BiSheng.js 会修改模板语法树，插入定位符，通过定位符来建立
 
 <!-- 
     BiSheng.js 才刚刚起步，尚不完善。
-    如果从我今天的分享中学到了东西或有所启发，请打赏一个赞。
+    如果从我今天的分享中学到了东西或有所启发，请在 GitHub 上打赏一个赞。
  -->
 
 <style type="text/css">

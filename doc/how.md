@@ -245,7 +245,7 @@ API 文档：已覆盖目前的公开 API。
 正在做的：用 HTML 注释节点来替换 script 节点，作为定位符。 
 -->
 
-1. 支持 [KISSY XTempalte](http://docs.kissyui.com/1.4/docs/html/api/xtemplate/index.html)
+1. 支持 [CROX](http://gitlab.alibaba-inc.com/thx/crox)、[KISSY XTempalte](http://docs.kissyui.com/1.4/docs/html/api/xtemplate/index.html)
 2. √ 定位符由 script 改为注释节点。
 3. 从修改语法树、扫描语法树、更新数据、更新视图等环节，优化性能。
 4. √ 解决兼容性问题（IE）

@@ -140,15 +140,15 @@ BI-Directional / Two-Way Data-Binding Library with JavaScript.
 
 * **AMD ( RequireJS )** [Specifications](https://github.com/amdjs/amdjs-api/wiki/AMD)
 
-    <iframe width="100%" height="370" src="http://jsfiddle.net/HbhJ3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+    <iframe width="100%" height="370" src="http://jsfiddle.net/HbhJ3/1/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 * **CMD ( SeaJS )** [Specifications](https://github.com/seajs/seajs/issues/242)
 
-    <iframe width="100%" height="430" src="http://jsfiddle.net/ekfY8/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+    <iframe width="100%" height="430" src="http://jsfiddle.net/ekfY8/1/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 * **KMD ( KISSY )** [Specifications](http://docs.kissyui.com/1.4/docs/html/guideline/kmd.html)
 
-    <iframe width="100%" height="430" src="http://jsfiddle.net/4eAF9/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+    <iframe width="100%" height="430" src="http://jsfiddle.net/4eAF9/1/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ## More Examples
 
@@ -169,6 +169,7 @@ BI-Directional / Two-Way Data-Binding Library with JavaScript.
 
 * [QUnit](../test/bisheng.html?noglobals=true&notrycatch=true)
 * [QUnit for KISSY](../test/bisheng_kissy.html?noglobals=true&notrycatch=true)
+* [QUnit for Zepto](../test/bisheng_zepto.html?noglobals=true&notrycatch=true)
 * [AMD ( RequireJS )](../test/expose_amd.html?noglobals=true&notrycatch=true)
 * [CMD ( SeaJS )](../test/expose_cmd.html?noglobals=true&notrycatch=true)
 * [KMD ( KISSY )](../test/expose_kmd.html?noglobals=true&notrycatch=true)
